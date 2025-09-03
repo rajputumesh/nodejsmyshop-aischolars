@@ -19,6 +19,40 @@ router.get("/list", async (req, res) => {
   }
 });
 
+router.get("/details", async (req, res) => {
+  try {
+    const detail = await User.findById(req.body.id);
+    res.status(200).json({
+      success: true,
+      message: "User fetched successfully.",
+      data: detail,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      data: err,
+    });
+  }
+});
+
+router.get("/detailnyemail/", async (req, res) => {
+  try {
+    const detail = await User.findOne({ email: req.body.email });
+    res.status(200).json({
+      success: true,
+      message: "User Detail successfully.",
+      data: detail,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      data: err,
+    });
+  }
+});
+
 router.post("/create", async (req, res) => {
   try {
     /* const user = new User({
@@ -47,8 +81,21 @@ router.post("/create", async (req, res) => {
   }
 });
 
-router.delete("/delete", (req, res) => {
-  res.json("Hi, this is my first node program");
+router.delete("/delete", async (req, res) => {
+  try {
+    const detail = await User.findByIdAndDelete(req.body.id);
+    res.status(200).json({
+      success: true,
+      message: "User Delete successfully.",
+      data: detail,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      data: err,
+    });
+  }
 });
 
 router.put("/update", (req, res) => {
