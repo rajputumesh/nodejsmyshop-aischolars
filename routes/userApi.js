@@ -81,9 +81,9 @@ router.post("/create", async (req, res) => {
   }
 });
 
-router.delete("/delete", async (req, res) => {
+router.delete("/delete/:user_id", async (req, res) => {
   try {
-    const detail = await User.findByIdAndDelete(req.body.id);
+    const detail = await User.findByIdAndDelete(req.params.user_id);
     res.status(200).json({
       success: true,
       message: "User Delete successfully.",
@@ -98,15 +98,23 @@ router.delete("/delete", async (req, res) => {
   }
 });
 
-router.put("/update", (req, res) => {
-  res.json("Hi, this is my first node program");
+router.put("/update/:user_id", async (req, res) => {
+  try {
+    const update = await User.findByIdAndUpdate(req.params.user_id, req.body, {
+      new: true,
+    });
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully.",
+      data: update,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      data: err,
+    });
+  }
 });
 
 module.exports = router;
-
-/* 
-http://localhost:8000/api/user/get
-/api/user/store
-/api/user/delete
-/api/user/update
-*/
