@@ -1,21 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../");
+const CategoryController = require("../http/controllers/CategoryController");
 
-router.get("/getAll", (req, res) => {
-  res.json("Hi, this is my first node program");
-});
-
-router.post("/store", (req, res) => {
-  res.json("Hi, this is my first node program");
-});
-
-router.delete("/delete", (req, res) => {
-  res.json("Hi, this is my first node program");
-});
-
-router.put("/update", (req, res) => {
-  res.json("Hi, this is my first node program");
-});
+router.post("/create", CategoryController.create);
 
 module.exports = router;
