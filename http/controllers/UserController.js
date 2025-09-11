@@ -37,10 +37,36 @@ exports.details = async (req, res) => {
 exports.DByEmail = async (req, res) => {
   try {
     const detail = await User.findOne({ email: req.body.email });
+    if (!detail) {
+      res.status(500).json({
+        success: false,
+        message: "User Not found",
+        data: err,
+      });
+    }
+
+    if (req.body.password !== detail.password) {
+      res.status(500).json({
+        success: false,
+        message: "Password not match",
+        data: err,
+      });
+    }
+
+    token = jwt.sign(
+      {
+        userId: detail.id,
+        email: detail.email,
+        name: detail.name,
+      },
+      "9f965da933c6f7689fca13a0d1ab871aa4070a3b853df141984ec5e8e0b13380",
+      { expiresIn: "1y" }
+    );
+
     res.status(200).json({
       success: true,
-      message: "User Detail successfully.",
-      data: detail,
+      message: "user login successfully.",
+      data: token,
     });
   } catch (err) {
     res.status(500).json({
@@ -58,6 +84,7 @@ exports.create = async (req, res) => {
       email: req.body.email,
       age: req.body.age,
       role:1
+      password:req.body.password
     }); */
 
     const data = req.body;
