@@ -2,6 +2,8 @@ const Product = require("../../models/ProductModel");
 
 exports.getAll = async (req, res) => {
   try {
+    console.log(req.user);
+
     const list = await Product.find().populate("CategoryId");
     res.status(200).json({
       success: true,

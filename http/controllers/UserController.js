@@ -1,4 +1,5 @@
 const User = require("../../models/UserModel");
+const bcrypt  = require('bcryptjs');
 
 exports.getAll = async (req, res) => {
   try {
@@ -88,8 +89,9 @@ exports.create = async (req, res) => {
     }); */
 
     const data = req.body;
-    data.role = 1;
-    data.name = `Dr. ${data.name}`;
+    data.role = 2;
+    data.password = await bcrypt.hash(data.password, 10);
+
     const user = new User(data);
     await user.save();
     res.status(200).json({

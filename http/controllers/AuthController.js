@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../../models/UserModel");
+const bcrypt = require("bcryptjs");
 
 exports.login = async (req, res) => {
   try {
@@ -12,10 +13,11 @@ exports.login = async (req, res) => {
       });
     }
 
-    if (req.body.password !== detail.password) {
+    const isMatch = await bcrypt.compare(req.body.password, detail.password);
+    if (!isMatch) {
       res.status(500).json({
         success: false,
-        message: "Password not match",
+        message: "Password not match. please retry again",
         data: "",
       });
     }
@@ -35,7 +37,7 @@ exports.login = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "user login successfully.",
-      data: token,
+      token: token,
     });
   } catch (err) {
     res.status(500).json({
